@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
-    <html>
+    <html lang="en">
       <body>
         <Navbar />
         <main>{children}</main>
