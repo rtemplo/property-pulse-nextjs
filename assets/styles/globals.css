@@ -1,1 +1,6 @@
 @import 'tailwindcss';
+
+/* Custom grid layout for property pages */
+.grid-70-30 {
+  grid-template-columns: 70% 28%;
+}
