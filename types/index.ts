@@ -1,4 +1,4 @@
-export interface Property {
+export interface IProperty {
   _id: string;
   owner: string;
   name: string;
@@ -31,5 +31,5 @@ export interface Property {
 }
 
 export interface PropertyCardProps {
-  property: Property;
+  property: IProperty;
 }

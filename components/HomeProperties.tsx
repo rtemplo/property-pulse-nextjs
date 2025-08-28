@@ -1,20 +1,27 @@
-import properties from '@/properties.json';
 import PropertyCard from './PropertyCard';
 import Link from 'next/link';
-import { Property } from '@/types';
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
+import { parsePropertyData } from '@/utils/typeGuards';
 
-const HomeProperties: React.FC = () => {
-  const recentProperties = properties.slice(0, 3);
+const HomeProperties: React.FC = async () => {
+  await connectDB();
+  const recentPropertiesData: unknown = await Property.find({})
+    .sort({ createdAt: -1 })
+    .limit(3)
+    .lean();
+  const recentProperties = parsePropertyData(recentPropertiesData);
+
   return (
     <>
       <section className="px-4 py-8">
         <div className="container-xl lg:container m-auto px-4 py-4">
           <h2 className="text-3xl font-bold text-blue-500 mb-6 text-center">Recent Properties</h2>
-          {properties.length === 0 ? (
+          {recentProperties.length === 0 ? (
             'No properties found'
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {recentProperties.map((property: Property) => (
+              {recentProperties.map((property) => (
                 <PropertyCard key={property._id} property={property} />
               ))}
             </div>
