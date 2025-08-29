@@ -1,6 +1,16 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Document, Model } from 'mongoose';
 
-const UserSchema = new Schema(
+// TypeScript interface for User document
+export interface IUser extends Document {
+  email: string;
+  username: string;
+  image?: string;
+  bookmarks?: Schema.Types.ObjectId[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+const UserSchema = new Schema<IUser>(
   {
     email: {
       type: String,
@@ -15,14 +25,18 @@ const UserSchema = new Schema(
     image: {
       type: String
     },
-    bookmarks: {
-      type: Schema.Types.ObjectId,
-      ref: 'Property'
-    }
+    bookmarks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Property'
+      }
+    ]
   },
-  { timestamps: true }
+  {
+    timestamps: true
+  }
 );
 
-const User = models.User || model('User', UserSchema);
+const User = (models.User as Model<IUser>) || model<IUser>('User', UserSchema);
 
 export default User;
