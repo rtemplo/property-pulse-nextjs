@@ -23,6 +23,7 @@ type AuthProviders = Record<LiteralUnion<BuiltInProviderType>, ClientSafeProvide
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const profileImage = session?.user?.image || profileDefault;
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -193,7 +194,13 @@ const Navbar = () => {
                   >
                     <span className="absolute -inset-1.5"></span>
                     <span className="sr-only">Open user menu</span>
-                    <Image className="h-8 w-8 rounded-full" src={profileDefault} alt="" />
+                    <Image
+                      className="h-8 w-8 rounded-full"
+                      width={40}
+                      height={40}
+                      src={profileImage}
+                      alt=""
+                    />
                   </button>
                 </div>
 
