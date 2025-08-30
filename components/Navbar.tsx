@@ -17,7 +17,6 @@ import {
 import logo from '@/assets/images/logo-white.png';
 import profileDefault from '@/assets/images/profile.png';
 import { BuiltInProviderType } from 'next-auth/providers/index';
-import { Auth } from 'mongodb';
 
 type AuthProviders = Record<LiteralUnion<BuiltInProviderType>, ClientSafeProvider>;
 
