@@ -163,17 +163,8 @@ export function parsePropertyData(data: unknown): IProperty[] {
     // Convert MongoDB documents to IProperty format
     const convertedData = data.map((item, index) => {
       try {
-        // Add logging to debug the conversion
-        console.log(`Converting item ${index}:`, {
-          _id: typeof item._id,
-          owner: typeof item.owner,
-          createdAt: typeof item.createdAt,
-          updatedAt: typeof item.updatedAt
-        });
         return convertMongoDocToIProperty(item);
       } catch (error) {
-        console.log(`Failed to convert item ${index}:`, item);
-        console.log(`Error details:`, error);
         throw new Error(`Failed to convert MongoDB document at index ${index}: ${error}`);
       }
     });
@@ -208,7 +199,7 @@ export function parseSinglePropertyData(data: unknown): IProperty {
   try {
     // Convert MongoDB document to IProperty format
     const convertedData = convertMongoDocToIProperty(data as Record<string, unknown>);
-    
+
     // Validate the converted data
     if (!isIProperty(convertedData)) {
       console.log('Converted property failed validation:', JSON.stringify(convertedData, null, 2));
