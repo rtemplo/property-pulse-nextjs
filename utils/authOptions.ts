@@ -20,26 +20,43 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // Invoked on successful sign on
     async signIn({ profile }) {
-      // 1. Connect to the database
-      await connectDB();
-      // 2. Check if the user exists
-      const user = await User.findOne({ email: profile?.email });
-      // 3. If not, create a new user
-      if (!user) {
-        const newUser: Partial<IUser> = {
-          email: profile?.email,
-          username: profile?.name?.slice(0, 20),
-          image: profile?.image
-        };
-        await User.create(newUser);
+      try {
+        // 1. Connect to the database
+        await connectDB();
+        // 2. Check if the user exists
+        const user = await User.findOne({ email: profile?.email });
+        // 3. If not, create a new user
+        if (!user) {
+          // Generate a unique username by combining name and email
+          const baseUsername = profile?.name?.slice(0, 20) || 'user';
+          let username = baseUsername;
+          let counter = 1;
+
+          // Check if username already exists and append counter if needed
+          while (await User.findOne({ username })) {
+            username = `${baseUsername}${counter}`;
+            counter++;
+          }
+
+          const newUser: Partial<IUser> = {
+            email: profile?.email,
+            username: username,
+            image: profile?.image
+          };
+          await User.create(newUser);
+        }
+        // 4. Return true to indicate successful sign in
+        return true;
+      } catch (error) {
+        console.error('Error during sign in:', error);
+        return false;
       }
-      // 4. Return true to indicate successful sign in
-      return true;
     },
     // Session callback function that modifies the session object
     async session({ session }) {
       // 1. Get user from database
       try {
+        await connectDB();
         const user = await User.findOne({ email: session.user?.email });
         // 2. Return the session with the user id embedded
         return { ...session, user: { ...session.user, id: user?._id } };
