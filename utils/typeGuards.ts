@@ -1,4 +1,47 @@
-import { IProperty } from '@/types';
+import { IProperty, IPropertyPulseSession } from '@/types';
+
+/**
+ * Type guard to validate if an unknown object matches the IPropertyPulseSession interface
+ * @param obj - The object to validate
+ * @returns true if the object is a valid IPropertyPulseSession, false otherwise
+ */
+export function isIPropertyPulseSession(obj: unknown): obj is IPropertyPulseSession {
+  if (typeof obj !== 'object' || obj === null) {
+    return false;
+  }
+
+  const session = obj as Record<string, unknown>;
+
+  // Check if user object exists and has the expected structure
+  if (session.user !== undefined) {
+    if (typeof session.user !== 'object' || session.user === null) {
+      return false;
+    }
+
+    const user = session.user as Record<string, unknown>;
+
+    // Validate user properties (all are optional but must be correct type if present)
+    if (user.id !== undefined && typeof user.id !== 'string' && user.id !== null) {
+      return false;
+    }
+    if (user.name !== undefined && typeof user.name !== 'string' && user.name !== null) {
+      return false;
+    }
+    if (user.email !== undefined && typeof user.email !== 'string' && user.email !== null) {
+      return false;
+    }
+    if (user.image !== undefined && typeof user.image !== 'string' && user.image !== null) {
+      return false;
+    }
+  }
+
+  // Basic session properties validation (extends Session from next-auth)
+  return (
+    typeof session.expires === 'string' ||
+    session.expires instanceof Date ||
+    typeof session.expires === 'undefined'
+  );
+}
 
 /**
  * Type guard to validate if an unknown object matches the IProperty interface

@@ -2,6 +2,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import connectDB from '@/config/database';
 import User, { IUser } from '@/models/User';
 import type { NextAuthOptions } from 'next-auth';
+import { IPropertyPulseSession } from '@/types';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -57,9 +58,17 @@ export const authOptions: NextAuthOptions = {
       // 1. Get user from database
       try {
         await connectDB();
-        const user = await User.findOne({ email: session.user?.email });
+        const user: IUser | null = await User.findOne({ email: session.user?.email });
+
         // 2. Return the session with the user id embedded
-        return { ...session, user: { ...session.user, id: user?._id } };
+        const appSession: IPropertyPulseSession = {
+          ...session,
+          user: {
+            ...session.user,
+            id: user?._id?.toString() // Convert ObjectId to string
+          }
+        };
+        return appSession;
       } catch (error) {
         console.error('Error fetching user:', error);
         return session;
