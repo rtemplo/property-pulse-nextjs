@@ -1,6 +1,19 @@
 'use server';
 
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
+import { getSessionUser } from '@/utils/getSessionUser';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+
 async function addProperty(formData: FormData) {
+  const amenities = formData.getAll('amenities').filter((item) => item !== '');
+  const images = (
+    formData
+      .getAll('images')
+      .filter((image) => image instanceof File && image.name !== '') as File[]
+  ).map((image) => image.name);
+
   const propertyData = {
     type: formData.get('type') as string,
     name: formData.get('name') as string,
