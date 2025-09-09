@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, InferSchemaType, Model, Types } from 'mongoose';
 
 const PropertySchema = new Schema(
   {
@@ -64,6 +64,20 @@ const PropertySchema = new Schema(
   { timestamps: true }
 );
 
-const Property = models.Property || model('Property', PropertySchema);
+export type PropertyType = InferSchemaType<typeof PropertySchema>;
+
+// Type for the actual document with MongoDB _id
+export type PropertyDocument = PropertyType & {
+  _id: Types.ObjectId;
+};
+
+// Type with owner as string and amenities as string[]
+export type LeanPropertyType = Omit<PropertyType, 'owner' | 'amenities'> & {
+  owner: string;
+  amenities: string[];
+};
+
+const Property =
+  (models.Property as Model<PropertyType>) || model<PropertyType>('Property', PropertySchema);
 
 export default Property;

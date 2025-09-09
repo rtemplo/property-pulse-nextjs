@@ -1,19 +1,22 @@
+import { PropertyDocument } from '@/models/Property';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarker } from 'react-icons/fa';
 
-import { PropertyCardProps } from '@/types';
+export interface PropertyCardProps {
+  property: PropertyDocument;
+}
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const getRateDisplay = () => {
     const { rates } = property;
-    if (rates.monthly) {
-      return `$${rates.monthly.toLocaleString()}/mo`;
-    } else if (rates.weekly) {
-      return `$${rates.weekly.toLocaleString()}/wk`;
-    } else if (rates.nightly) {
-      return `$${rates.nightly.toLocaleString()}/night`;
+    if (rates?.monthly) {
+      return `$${rates?.monthly.toLocaleString()}/mo`;
+    } else if (rates?.weekly) {
+      return `$${rates?.weekly.toLocaleString()}/wk`;
+    } else if (rates?.nightly) {
+      return `$${rates?.nightly.toLocaleString()}/night`;
     }
   };
 
@@ -67,7 +70,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             <FaMapMarker className="text-orange-700 mt-1" />
             <span className="text-orange-700">
               {' '}
-              {property.location.city} {property.location.state}{' '}
+              {property?.location?.city} {property?.location?.state}{' '}
             </span>
           </div>
           <Link

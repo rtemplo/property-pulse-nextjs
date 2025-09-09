@@ -1,20 +1,24 @@
 'use server';
 
 import connectDB from '@/config/database';
-import Property from '@/models/Property';
+import Property, { LeanPropertyType } from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 async function addProperty(formData: FormData) {
-  const amenities = formData.getAll('amenities').filter((item) => item !== '');
+  const amenities = formData
+    .getAll('amenities')
+    .filter((item) => item !== '')
+    .map((item) => item.toString());
+
   const images = (
     formData
       .getAll('images')
       .filter((image) => image instanceof File && image.name !== '') as File[]
   ).map((image) => image.name);
 
-  const propertyData = {
+  const propertyData: Partial<LeanPropertyType> = {
     type: formData.get('type') as string,
     name: formData.get('name') as string,
     description: formData.get('description') as string,
@@ -27,7 +31,7 @@ async function addProperty(formData: FormData) {
     beds: Number(formData.get('beds')),
     baths: Number(formData.get('baths')),
     square_feet: Number(formData.get('square_feet')),
-    amenities: formData.getAll('amenities') as string[],
+    amenities,
     rates: {
       weekly: formData.get('rates.weekly') ? Number(formData.get('rates.weekly')) : undefined,
       monthly: formData.get('rates.monthly') ? Number(formData.get('rates.monthly')) : undefined,
@@ -38,9 +42,7 @@ async function addProperty(formData: FormData) {
       email: formData.get('seller_info.email') as string,
       phone: formData.get('seller_info.phone') as string
     },
-    images: formData
-      .getAll('images')
-      .filter((file): file is File => file instanceof File && file.name !== '') as File[]
+    images
   };
 
   console.log('Property added:', propertyData);

@@ -1,6 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google';
 import connectDB from '@/config/database';
-import User, { IUser } from '@/models/User';
+import User from '@/models/User';
 import type { NextAuthOptions } from 'next-auth';
 import { IPropertyPulseSession } from '@/types';
 
@@ -22,14 +22,24 @@ export const authOptions: NextAuthOptions = {
     // Invoked on successful sign on
     async signIn({ profile }) {
       try {
+        if (!profile?.email || profile.email.trim() === '') {
+          throw new Error('No email found in user profile');
+        }
+
+        if (!profile.name || profile.name.trim() === '') {
+          throw new Error('No name found in user profile');
+        }
+
         // 1. Connect to the database
         await connectDB();
+
         // 2. Check if the user exists
         const user = await User.findOne({ email: profile?.email });
+
         // 3. If not, create a new user
         if (!user) {
           // Generate a unique username by combining name and email
-          const baseUsername = profile?.name?.slice(0, 20) || 'user';
+          const baseUsername = profile!.name!.slice(0, 20) || 'user';
           let username = baseUsername;
           let counter = 1;
 
@@ -39,13 +49,15 @@ export const authOptions: NextAuthOptions = {
             counter++;
           }
 
-          const newUser: Partial<IUser> = {
-            email: profile?.email,
+          const newUser = {
+            email: profile!.email,
             username: username,
             image: profile?.image
           };
+
           await User.create(newUser);
         }
+
         // 4. Return true to indicate successful sign in
         return true;
       } catch (error) {
@@ -58,7 +70,7 @@ export const authOptions: NextAuthOptions = {
       // 1. Get user from database
       try {
         await connectDB();
-        const user: IUser | null = await User.findOne({ email: session.user?.email });
+        const user = await User.findOne({ email: session.user?.email });
 
         // 2. Return the session with the user id embedded
         const appSession: IPropertyPulseSession = {

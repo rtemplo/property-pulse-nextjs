@@ -2,7 +2,6 @@ import PropertyCard from '@/components/PropertyCard';
 // import properties from '@/properties.json';
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
-import { parsePropertyData } from '@/utils/typeGuards';
 
 // Add artificial delay to see loading component
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -12,8 +11,7 @@ const PropertiesPage = async () => {
   // await delay(300);
 
   await connectDB();
-  const propertiesData: unknown = await Property.find({}).lean();
-  const properties = parsePropertyData(propertiesData);
+  const properties = await Property.find({}).lean();
 
   return (
     <section className="px-4 py-8">
@@ -23,7 +21,7 @@ const PropertiesPage = async () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {properties.map((property) => (
-              <PropertyCard key={property._id} property={property} />
+              <PropertyCard key={property._id.toString()} property={property} />
             ))}
           </div>
         )}

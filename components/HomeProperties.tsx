@@ -2,15 +2,10 @@ import PropertyCard from './PropertyCard';
 import Link from 'next/link';
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
-import { parsePropertyData } from '@/utils/typeGuards';
 
 const HomeProperties: React.FC = async () => {
   await connectDB();
-  const recentPropertiesData: unknown = await Property.find({})
-    .sort({ createdAt: -1 })
-    .limit(3)
-    .lean();
-  const recentProperties = parsePropertyData(recentPropertiesData);
+  const recentProperties = await Property.find({}).sort({ createdAt: -1 }).limit(3).lean();
 
   return (
     <>
@@ -22,7 +17,7 @@ const HomeProperties: React.FC = async () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {recentProperties.map((property) => (
-                <PropertyCard key={property._id} property={property} />
+                <PropertyCard key={property._id.toString()} property={property} />
               ))}
             </div>
           )}
