@@ -6,8 +6,8 @@ interface PropertyImagesProps {
 
 const PropertyImages: React.FC<PropertyImagesProps> = ({ images }) => {
   return (
-    <section className="bg-blue-50 p-4">
-      <div className="container mx-auto">
+    <section className="bg-blue-50">
+      <div className="container m-auto p-6">
         {images.length === 0 ? (
           <Image
             alt=""
