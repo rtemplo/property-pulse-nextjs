@@ -5,6 +5,7 @@ import Property, { LeanPropertyType } from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import cloudinary from '@/config/cloudinary';
 
 async function addProperty(formData: FormData) {
   await connectDB();
@@ -21,11 +22,9 @@ async function addProperty(formData: FormData) {
     .filter((item) => item !== '')
     .map((item) => item.toString());
 
-  const images = (
-    formData
-      .getAll('images')
-      .filter((image) => image instanceof File && image.name !== '') as File[]
-  ).map((imagefile) => imagefile.name);
+  const images = formData
+    .getAll('images')
+    .filter((image) => image instanceof File && image.name !== '') as File[];
 
   const propertyData: Partial<LeanPropertyType> = {
     owner: userId,
@@ -51,9 +50,27 @@ async function addProperty(formData: FormData) {
       name: formData.get('seller_info.name') as string,
       email: formData.get('seller_info.email') as string,
       phone: formData.get('seller_info.phone') as string
-    },
-    images
+    }
   };
+
+  const imageUrls: string[] = [];
+
+  for (const imageFile of images) {
+    const imageBuffer = await imageFile.arrayBuffer();
+    const imageArray = Array.from(new Uint8Array(imageBuffer));
+    const imageData = Buffer.from(imageArray);
+    const imageBase64 = imageData.toString('base64');
+
+    // Make request to cloudinary
+    const result = await cloudinary.uploader.upload(
+      `data:${imageFile.type};base64,${imageBase64}`,
+      { folder: 'property-pulse' }
+    );
+
+    imageUrls.push(result.secure_url);
+  }
+
+  propertyData.images = imageUrls;
 
   const newProperty = new Property(propertyData);
   await newProperty.save();
