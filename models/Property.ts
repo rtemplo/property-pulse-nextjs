@@ -72,9 +72,9 @@ export type PropertyDocument = PropertyType & {
 };
 
 // Type with owner as string and amenities as string[]
-export type LeanPropertyType = Omit<PropertyType, 'owner' | 'amenities'> & {
+export type SerializableProperty = Omit<PropertyType, 'owner'> & {
+  _id: string;
   owner: string;
-  amenities: string[];
 };
 
 const Property =

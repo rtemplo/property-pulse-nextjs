@@ -4,6 +4,7 @@ import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import profileDefault from '@/assets/images/profile.png';
 import ProfileProperties from '@/components/ProfileProperties';
+import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 const ProfilePage: React.FC = async () => {
   await connectDB();
@@ -12,13 +13,12 @@ const ProfilePage: React.FC = async () => {
 
   const { userId } = sessionUser || {};
 
-  console.log('Session User:', sessionUser);
-
   if (!userId) throw new Error('User not authenticated');
 
   const profileImage = sessionUser?.user?.image || profileDefault;
 
-  const properties = await Property.find({ owner: userId }).lean();
+  const propertiesData = await Property.find({ owner: userId }).lean();
+  const properties = propertiesData.map(convertToSerializeableObject);
 
   return (
     <section className="bg-blue-50">
