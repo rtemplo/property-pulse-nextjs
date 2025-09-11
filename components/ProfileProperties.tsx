@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { PropertyDocument } from '@/models/Property';
 import deleteProperty from '@/app/actions/deleteProperty';
+import { toast } from 'react-toastify';
 
 interface ProfilePropertiesProps {
   initialProperties: PropertyDocument[];
@@ -22,7 +23,9 @@ const ProfileProperties: React.FC<ProfilePropertiesProps> = ({ initialProperties
     try {
       await deleteProperty(propertyId);
       setProperties((prev) => prev.filter((p) => p._id.toString() !== propertyId));
+      toast.success('Property deleted successfully');
     } catch (error) {
+      toast.error('Failed to delete property');
       console.error('Error deleting property:', error);
     }
   };
