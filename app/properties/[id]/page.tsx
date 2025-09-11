@@ -4,6 +4,9 @@ import { FaArrowLeft } from 'react-icons/fa';
 import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyImages from '@/components/PropertyImages';
+import BookmarkButton from '@/components/BookmarkButton';
+import ShareButtons from '@/components/ShareButtons';
+import PropertyContactForm from '@/components/PropertyContactForm';
 
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
@@ -32,7 +35,14 @@ const PropertyPage = async ({ params }: PageProps) => {
         <div className="container m-auto py-10 px-6">
           <div className="grid grid-cols-1 md:grid-cols-[70%_28%] w-full gap-6">
             {property ? (
-              <PropertyDetails property={property} />
+              <>
+                <PropertyDetails property={property} />
+                <aside className="space-y-4">
+                  <BookmarkButton property={property} />
+                  <ShareButtons property={property} />
+                  <PropertyContactForm property={property} />
+                </aside>
+              </>
             ) : (
               <div className="col-span-1 md:col-span-2">
                 <p className="text-gray-500">Property not found</p>
