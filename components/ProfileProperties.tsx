@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PropertyDocument } from '@/models/Property';
+import deleteProperty from '@/app/actions/deleteProperty';
 
 interface ProfilePropertiesProps {
   initialProperties: PropertyDocument[];
@@ -10,6 +11,21 @@ interface ProfilePropertiesProps {
 
 const ProfileProperties: React.FC<ProfilePropertiesProps> = ({ initialProperties }) => {
   const [properties, setProperties] = useState<PropertyDocument[]>(initialProperties);
+
+  const handleDeleteProperty = async (propertyId: string) => {
+    const confirmed = confirm('Are you sure you want to delete this property?');
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteProperty(propertyId);
+      setProperties((prev) => prev.filter((p) => p._id.toString() !== propertyId));
+    } catch (error) {
+      console.error('Error deleting property:', error);
+    }
+  };
 
   return (
     <div>
@@ -41,6 +57,7 @@ const ProfileProperties: React.FC<ProfilePropertiesProps> = ({ initialProperties
             <button
               className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
               type="button"
+              onClick={() => handleDeleteProperty(property._id.toString())}
             >
               Delete
             </button>
