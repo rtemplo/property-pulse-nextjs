@@ -1,3 +1,4 @@
+import updateProperty from '@/app/actions/updateProperty';
 import { PropertyDocument } from '@/models/Property';
 
 interface PropertyEditFormProps {
@@ -5,8 +6,13 @@ interface PropertyEditFormProps {
 }
 
 const PropertyEditForm: React.FC<PropertyEditFormProps> = ({ property }) => {
+  const updatePropertyById = updateProperty.bind(null, property._id.toString());
+
   return (
-    <form>
+    <form
+      action={updatePropertyById}
+      className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md"
+    >
       <h2 className="text-3xl text-center font-semibold mb-6">Edit Property</h2>
 
       <div className="mb-4">
