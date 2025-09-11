@@ -13,6 +13,9 @@ async function deleteProperty(propertyId: string) {
   }
 
   const { userId } = sessionUser;
+
+  await connectDB();
+
   const property = await Property.findById(propertyId);
 
   if (!property) {
