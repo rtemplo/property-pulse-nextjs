@@ -15,6 +15,7 @@ const PropertyImages: React.FC<PropertyImagesProps> = ({ images }) => {
             className="object-cover h-[400px] mx-auto rounded-xl"
             width={1800}
             height={400}
+            style={{ width: 'auto', height: 'auto' }}
             priority={true}
           />
         ) : (
@@ -34,6 +35,7 @@ const PropertyImages: React.FC<PropertyImagesProps> = ({ images }) => {
                   className="object-cover h-[400px] w-full rounded-xl"
                   width={1800}
                   height={400}
+                  style={{ width: 'auto', height: 'auto' }}
                   priority={true}
                 />
               </div>
