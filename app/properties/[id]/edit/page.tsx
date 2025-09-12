@@ -1,6 +1,6 @@
 import PropertyEditForm from '@/components/PropertyEditForm';
 import connectDB from '@/config/database';
-import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
+import Property, { PropertyDocument } from '@/models/Property';
 import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 type PageProps = {
