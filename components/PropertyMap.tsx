@@ -18,16 +18,14 @@ interface PropertyMapProps {
 const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
   const [lat, setLat] = useState<number | null>(null);
   const [lng, setLng] = useState<number | null>(null);
-  const [viewport, setViewport] = useState({
-    latitude: 0,
-    longitude: 0,
-    zoom: 12,
-    width: '100%',
-    height: '500px'
-  });
 
   const [loading, setLoading] = useState(true);
   const [geocodeError, setGeocodeError] = useState<boolean>(false);
+
+  const street = property.location?.street || '';
+  const city = property.location?.city || '';
+  const state = property.location?.state || '';
+  const zipcode = property.location?.zipcode || '';
 
   setDefaults({
     key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
@@ -38,8 +36,8 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
 
   useEffect(() => {
     const fetchCoordinates = async () => {
-      if (property.location) {
-        const address = `${property.location.street}, ${property.location.city}, ${property.location.state} ${property.location.zipcode}`;
+      if (street && city && state && zipcode) {
+        const address = `${street}, ${city}, ${state} ${zipcode}`;
         try {
           console.log('Geocoding request intiated for address');
           const response = await fromAddress(address);
@@ -48,11 +46,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
             const { lat, lng } = response.results[0].geometry.location;
             setLat(lat);
             setLng(lng);
-            setViewport({
-              ...viewport,
-              latitude: lat,
-              longitude: lng
-            });
+
             setGeocodeError(false);
             console.log('Geocoding request: Address found.');
           } else {
@@ -68,7 +62,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
       }
     };
     fetchCoordinates();
-  }, [property.location, viewport]);
+  }, [street, city, state, zipcode]); // Only re-run if property.location changes
 
   if (loading) {
     return <Spinner />;
