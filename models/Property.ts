@@ -78,6 +78,7 @@ export type SerializableProperty = Omit<PropertyType, 'owner'> & {
 };
 
 const Property =
-  (models.Property as Model<PropertyType>) || model<PropertyType>('Property', PropertySchema);
+  (models.Property as Model<PropertyDocument>) ||
+  model<PropertyDocument>('Property', PropertySchema);
 
 export default Property;
