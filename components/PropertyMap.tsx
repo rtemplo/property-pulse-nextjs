@@ -41,6 +41,7 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
       if (property.location) {
         const address = `${property.location.street}, ${property.location.city}, ${property.location.state} ${property.location.zipcode}`;
         try {
+          console.log('Geocoding request intiated for address');
           const response = await fromAddress(address);
 
           if (response?.results?.length > 0) {
@@ -53,8 +54,10 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {
               longitude: lng
             });
             setGeocodeError(false);
+            console.log('Geocoding request: Address found.');
           } else {
             setGeocodeError(true);
+            console.log('Geocoding request: No address found.');
           }
         } catch (error) {
           console.error('Error fetching coordinates:', error);

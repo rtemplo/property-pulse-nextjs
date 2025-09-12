@@ -6,7 +6,7 @@ import { getSessionUser } from '@/utils/getSessionUser';
 import { Types } from 'mongoose';
 
 async function checkBookmarkStatus(propertyId: string) {
-  await connectDB();
+  await connectDB('checkBookmarkStatus');
 
   const sessionUser = await getSessionUser();
   const userId = sessionUser.user?.id;

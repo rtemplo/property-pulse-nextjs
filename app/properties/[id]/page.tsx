@@ -17,7 +17,7 @@ type PageProps = {
 
 const PropertyPage = async ({ params }: PageProps) => {
   const { id } = await params;
-  await connectDB();
+  await connectDB(`/properties/${id}`);
   const property = await Property.findById(id).lean();
 
   return (

@@ -10,7 +10,7 @@ const PropertiesPage = async () => {
   // Add .3 second delay to see loading component
   // await delay(300);
 
-  await connectDB();
+  await connectDB('/properties');
   const properties = await Property.find({}).lean();
 
   return (

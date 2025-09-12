@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         // 1. Connect to the database
-        await connectDB();
+        await connectDB('NextAuth signIn');
 
         // 2. Check if the user exists
         const user = await User.findOne({ email: profile?.email });
@@ -68,7 +68,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session }) {
       // 1. Get user from database
       try {
-        await connectDB();
+        await connectDB('NextAuth get server session');
         const user = await User.findOne({ email: session.user?.email });
 
         // 2. Return the session with the user id embedded

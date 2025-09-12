@@ -9,7 +9,7 @@ type PageProps = {
 
 const PropertyEditPage: React.FC<PageProps> = async ({ params }) => {
   const { id } = await params;
-  await connectDB();
+  await connectDB(`/properties/${id}/edit`);
 
   const propertyDoc = (await Property.findById(id).lean()) as PropertyDocument;
 

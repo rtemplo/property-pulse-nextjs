@@ -7,7 +7,7 @@ import ProfileProperties from '@/components/ProfileProperties';
 import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 const ProfilePage: React.FC = async () => {
-  await connectDB();
+  await connectDB('/profile');
 
   const sessionUser = await getSessionUser();
 

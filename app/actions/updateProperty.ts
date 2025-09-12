@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 async function updateProperty(propertyId: string, formData: FormData) {
-  await connectDB();
+  await connectDB('updateProperty');
 
   const sessionUser = await getSessionUser();
   if (!sessionUser?.userId) {

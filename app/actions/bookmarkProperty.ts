@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 import { Types } from 'mongoose';
 
 async function bookmarkProperty(propertyId: string) {
-  await connectDB();
+  await connectDB('bookmarkProperty');
 
   const sessionUser = await getSessionUser();
 

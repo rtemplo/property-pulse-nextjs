@@ -5,7 +5,7 @@ import User from '@/models/User';
 import { PropertyDocument } from '@/models/Property';
 
 const SavedPropertiesPage: React.FC = async () => {
-  await connectDB();
+  await connectDB('/properties/saved');
   const { userId } = await getSessionUser();
 
   if (!userId) {

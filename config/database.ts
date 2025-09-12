@@ -2,10 +2,15 @@ import mongoose from 'mongoose';
 
 let connected = false;
 
-const connectDB = async () => {
+const connectDB = async (source?: string) => {
   mongoose.set('strictQuery', true); // Add this line to set strictQuery to true
+  let message: string = source ? `DB connection request from ${source}.` : 'DB connection request.';
 
-  if (connected) return;
+  if (connected) {
+    message += ' > Already connected.';
+    console.log(message);
+    return;
+  }
 
   try {
     const mongoUri = process.env.MONGODB_URI;
@@ -16,9 +21,11 @@ const connectDB = async () => {
 
     await mongoose.connect(mongoUri);
     connected = true;
-    console.log('MongoDB connected');
+    message += ' > Connection successful.';
+    console.log(message);
   } catch (error) {
-    console.error('MongoDB connection error:', error);
+    message += ' > Connection error.';
+    console.error(message, error);
   }
 };
 
