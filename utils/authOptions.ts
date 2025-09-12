@@ -1,8 +1,7 @@
 import GoogleProvider from 'next-auth/providers/google';
 import connectDB from '@/config/database';
 import User from '@/models/User';
-import type { NextAuthOptions } from 'next-auth';
-import { IPropertyPulseSession } from '@/types';
+import type { NextAuthOptions, Session } from 'next-auth';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -73,13 +72,18 @@ export const authOptions: NextAuthOptions = {
         const user = await User.findOne({ email: session.user?.email });
 
         // 2. Return the session with the user id embedded
-        const appSession: IPropertyPulseSession = {
+        if (!user?.id) {
+          throw new Error('No user id found');
+        }
+
+        const appSession: Session = {
           ...session,
           user: {
             ...session.user,
             id: user?._id?.toString() // Convert ObjectId to string
           }
         };
+
         return appSession;
       } catch (error) {
         console.error('Error fetching user:', error);
