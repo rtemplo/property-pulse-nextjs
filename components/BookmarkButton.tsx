@@ -18,15 +18,22 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ property }) => {
   const userId = session?.user.id;
 
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [loading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!userId) {
+      setIsLoading(false);
+      return;
+    }
+
     const fetchBookmarkStatus = async () => {
       const isBookmarked = await checkBookmarkStatus(property._id.toString());
       setIsBookmarked(isBookmarked);
+      setIsLoading(false);
     };
 
     fetchBookmarkStatus();
-  }, [property._id]);
+  }, [property._id, userId]);
 
   const handleClick = async () => {
     if (!userId) {
@@ -46,6 +53,8 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ property }) => {
       return;
     }
   };
+
+  if (loading) return <p className="text-center">Loading...</p>;
 
   return (
     <button
