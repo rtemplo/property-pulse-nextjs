@@ -28,7 +28,7 @@ const PropertyContactForm: React.FC<PropertyContactFormProps> = ({ property }) =
   }, [state?.error, state?.submitted, isPending]);
 
   if (state?.submitted) {
-    return <p className="text-green-500 mb-4">Your message has been sent successfully</p>;
+    return <p className="text-green-500 text-center mb-4">Your message has been sent.</p>;
   }
 
   return (
