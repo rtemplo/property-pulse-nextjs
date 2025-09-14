@@ -1,24 +1,26 @@
-import { PropertyDocument, SerializableProperty } from '@/models/Property';
-import { MessageDocument, SerializableMessage } from '@/models/Message';
-import { SerializableUser, UserDocument } from '@/models/User';
+import { PropertyDocument, SerializeableProperty } from '@/models/Property';
+import { MessageDocument, SerializeableMessage } from '@/models/Message';
+import { SerializeableUser, UserDocument } from '@/models/User';
 
 export function convertToSerializeableObject<
   T extends PropertyDocument | UserDocument | MessageDocument,
-  U extends SerializableProperty | SerializableUser | SerializableMessage
+  U extends SerializeableProperty | SerializeableUser | SerializeableMessage
 >(leanDocument: T): U {
+  const isConvertibleObject = (
+    value: unknown
+  ): value is { toJSON: () => unknown; toString: () => string } => {
+    return Boolean(value && typeof value === 'object' && 'toJSON' in value && 'toString' in value);
+  };
+
   for (const key of Object.keys(leanDocument)) {
     const value = leanDocument[key as keyof T];
-    if (value && typeof value === 'object' && 'toJSON' in value && 'toString' in value) {
+    if (isConvertibleObject(value)) {
       (leanDocument[key as keyof T] as unknown) = value.toString();
     }
 
     if (Array.isArray(value)) {
       (leanDocument[key as keyof T] as unknown) = value
-        .map((item) =>
-          item && typeof item === 'object' && 'toJSON' in item && 'toString' in item
-            ? item.toString()
-            : null
-        )
+        .map((item) => (isConvertibleObject(item) ? item.toString() : null))
         .filter((item): item is string => item !== null);
     }
   }
