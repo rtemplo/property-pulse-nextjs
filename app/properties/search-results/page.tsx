@@ -3,7 +3,7 @@ import PropertyCard from '@/components/PropertyCard';
 import PropertySearchForm from '@/components/PropertySearchForm';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import connectDB from '@/config/database';
-import Property from '@/models/Property';
+import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
 import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 interface PageProps {
@@ -35,7 +35,9 @@ const SearchResultsPage: React.FC<PageProps> = async ({ searchParams }) => {
   };
 
   const propertyQueryResults = await Property.find(query).lean();
-  const properties = propertyQueryResults.map(convertToSerializeableObject);
+  const properties = propertyQueryResults.map(
+    convertToSerializeableObject<PropertyDocument, SerializableProperty>
+  );
   console.log(properties);
 
   return (

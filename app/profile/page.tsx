@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import connectDB from '@/config/database';
-import Property from '@/models/Property';
+import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import profileDefault from '@/assets/images/profile.png';
 import ProfileProperties from '@/components/ProfileProperties';
@@ -18,7 +18,9 @@ const ProfilePage: React.FC = async () => {
   const profileImage = sessionUser?.user?.image || profileDefault;
 
   const propertiesData = await Property.find({ owner: userId }).lean();
-  const properties = propertiesData.map(convertToSerializeableObject);
+  const properties = propertiesData.map(
+    convertToSerializeableObject<PropertyDocument, SerializableProperty>
+  );
 
   return (
     <section className="bg-blue-50">

@@ -1,12 +1,12 @@
 import updateProperty from '@/app/actions/updateProperty';
-import { PropertyDocument } from '@/models/Property';
+import { SerializableProperty } from '@/models/Property';
 
 interface PropertyEditFormProps {
-  property: PropertyDocument;
+  property: SerializableProperty;
 }
 
 const PropertyEditForm: React.FC<PropertyEditFormProps> = ({ property }) => {
-  const updatePropertyById = updateProperty.bind(null, property._id.toString());
+  const updatePropertyById = updateProperty.bind(null, property._id);
 
   return (
     <form

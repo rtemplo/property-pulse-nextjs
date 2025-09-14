@@ -1,11 +1,26 @@
-import { PropertyDocument } from '@/models/Property';
+import { PropertyDocument, SerializableProperty } from '@/models/Property';
+import { MessageDocument, SerializableMessage } from '@/models/Message';
+import { SerializableUser, UserDocument } from '@/models/User';
 
-export function convertToSerializeableObject(leanDocument: PropertyDocument) {
+export function convertToSerializeableObject<
+  T extends PropertyDocument | UserDocument | MessageDocument,
+  U extends SerializableProperty | SerializableUser | SerializableMessage
+>(leanDocument: T): U {
   for (const key of Object.keys(leanDocument)) {
-    const value = leanDocument[key as keyof PropertyDocument];
+    const value = leanDocument[key as keyof T];
     if (value && typeof value === 'object' && 'toJSON' in value && 'toString' in value) {
-      (leanDocument[key as keyof PropertyDocument] as unknown) = value.toString();
+      (leanDocument[key as keyof T] as unknown) = value.toString();
+    }
+
+    if (Array.isArray(value)) {
+      (leanDocument[key as keyof T] as unknown) = value
+        .map((item) =>
+          item && typeof item === 'object' && 'toJSON' in item && 'toString' in item
+            ? item.toString()
+            : null
+        )
+        .filter((item): item is string => item !== null);
     }
   }
-  return leanDocument;
+  return leanDocument as unknown as U;
 }

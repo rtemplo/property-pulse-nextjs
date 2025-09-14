@@ -2,16 +2,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PropertyDocument } from '@/models/Property';
+import { SerializableProperty } from '@/models/Property';
 import deleteProperty from '@/app/actions/deleteProperty';
 import { toast } from 'react-toastify';
 
 interface ProfilePropertiesProps {
-  initialProperties: PropertyDocument[];
+  initialProperties: SerializableProperty[];
 }
 
 const ProfileProperties: React.FC<ProfilePropertiesProps> = ({ initialProperties }) => {
-  const [properties, setProperties] = useState<PropertyDocument[]>(initialProperties);
+  const [properties, setProperties] = useState<SerializableProperty[]>(initialProperties);
 
   const handleDeleteProperty = async (propertyId: string) => {
     const confirmed = confirm('Are you sure you want to delete this property?');
@@ -52,7 +52,7 @@ const ProfileProperties: React.FC<ProfilePropertiesProps> = ({ initialProperties
           </div>
           <div className="mt-2">
             <Link
-              href={`/properties/${property._id.toString()}/edit`}
+              href={`/properties/${property._id}/edit`}
               className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600"
             >
               Edit
@@ -60,7 +60,7 @@ const ProfileProperties: React.FC<ProfilePropertiesProps> = ({ initialProperties
             <button
               className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
               type="button"
-              onClick={() => handleDeleteProperty(property._id.toString())}
+              onClick={() => handleDeleteProperty(property._id)}
             >
               Delete
             </button>

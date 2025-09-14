@@ -2,7 +2,7 @@ import PropertyMap from '@/components/PropertyMap';
 import { FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarker, FaTimes } from 'react-icons/fa';
 import { convertToSerializeableObject } from '@/utils/convertToObject';
 
-import { PropertyDocument } from '@/models/Property';
+import { PropertyDocument, SerializableProperty } from '@/models/Property';
 
 export interface PropertyDetailProps {
   property: PropertyDocument;
@@ -90,7 +90,9 @@ const PropertyDetails: React.FC<PropertyDetailProps> = ({ property }) => {
       </div>
       {/* <!-- Map --> */}
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-        <PropertyMap property={convertToSerializeableObject(property)} />
+        <PropertyMap
+          property={convertToSerializeableObject<PropertyDocument, SerializableProperty>(property)}
+        />
       </div>
     </main>
   );

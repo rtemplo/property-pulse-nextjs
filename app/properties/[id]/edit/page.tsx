@@ -1,6 +1,6 @@
 import PropertyEditForm from '@/components/PropertyEditForm';
 import connectDB from '@/config/database';
-import Property, { PropertyDocument } from '@/models/Property';
+import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
 import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 type PageProps = {
@@ -11,13 +11,15 @@ const PropertyEditPage: React.FC<PageProps> = async ({ params }) => {
   const { id } = await params;
   await connectDB(`/properties/${id}/edit`);
 
-  const propertyDoc = (await Property.findById(id).lean()) as PropertyDocument;
+  const propertyDoc = await Property.findById(id).lean();
 
   if (!propertyDoc) {
     return <h1 className="text-center text-2xl font-bold mt-10">Property not found</h1>;
   }
 
-  const property = convertToSerializeableObject(propertyDoc);
+  const property = convertToSerializeableObject<PropertyDocument, SerializableProperty>(
+    propertyDoc
+  );
 
   return (
     <div className="bg-blue-500">

@@ -34,6 +34,11 @@ export type UserDocument = UserType & {
   _id: Types.ObjectId;
 };
 
+export type SerializableUser = Omit<UserType, 'bookmarks'> & {
+  _id: string;
+  bookmarks: string[];
+};
+
 const User = (models.User as Model<UserDocument>) || model<UserDocument>('User', UserSchema);
 
 export default User;
