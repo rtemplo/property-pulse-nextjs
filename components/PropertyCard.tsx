@@ -1,4 +1,4 @@
-import { PropertyDocument, SerializeableProperty } from '@/models/Property';
+import { SerializeableProperty } from '@/models/Property';
 import Image from 'next/image';
 import Link from 'next/link';
 
