@@ -1,11 +1,11 @@
-import connectDB from '@/config/database';
 import Messages, { MessageDocument, SerializeableMessage } from '@/models/Message';
-import '@/models/Property';
-import { convertToSerializeableObject } from '@/utils/convertToObject';
-import { getSessionUser } from '@/utils/getSessionUser';
 import MessageCard from '@/components/MessageCard';
+
+import connectDB from '@/config/database';
+import { getSessionUser } from '@/utils/getSessionUser';
+import { convertToSerializeableObject } from '@/utils/convertToObject';
+
 import { SerializeableUser, UserDocument } from '@/models/User';
-import { User } from 'next-auth';
 import { PropertyDocument, SerializeableProperty } from '@/models/Property';
 
 const MessagesPage: React.FC = async () => {

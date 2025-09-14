@@ -27,9 +27,9 @@ async function markMessageAsRead(messageId: string) {
 
   message.read = !message.read;
 
-  revalidatePath('/messages', 'page');
-
   await message.save();
+
+  revalidatePath('/messages', 'page');
 
   return message.read;
 }
