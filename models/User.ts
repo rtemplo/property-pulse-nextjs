@@ -34,7 +34,7 @@ export type UserDocument = UserType & {
   _id: Types.ObjectId;
 };
 
-export type SerializableUser = Omit<UserType, 'bookmarks'> & {
+export type SerializeableUser = Omit<UserType, 'bookmarks'> & {
   _id: string;
   bookmarks: string[];
 };

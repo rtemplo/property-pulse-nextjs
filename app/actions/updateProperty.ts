@@ -1,7 +1,7 @@
 'use server';
 
 import connectDB from '@/config/database';
-import Property, { SerializableProperty } from '@/models/Property';
+import Property, { SerializeableProperty } from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -31,7 +31,7 @@ async function updateProperty(propertyId: string, formData: FormData) {
     .filter((item) => item !== '')
     .map((item) => item.toString());
 
-  const propertyData: Partial<SerializableProperty> = {
+  const propertyData: Partial<SerializeableProperty> = {
     owner: userId,
     type: formData.get('type') as string,
     name: formData.get('name') as string,

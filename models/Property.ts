@@ -1,4 +1,5 @@
 import { Schema, model, models, InferSchemaType, Model, Types } from 'mongoose';
+import { SerializeableUser } from './User';
 
 const PropertySchema = new Schema(
   {
@@ -66,15 +67,13 @@ const PropertySchema = new Schema(
 
 export type PropertyType = InferSchemaType<typeof PropertySchema>;
 
-// Type for the actual document with MongoDB _id
 export type PropertyDocument = PropertyType & {
   _id: Types.ObjectId;
 };
 
-// Type with owner as string and amenities as string[]
-export type SerializableProperty = Omit<PropertyType, 'owner'> & {
+export type SerializeableProperty = Omit<PropertyType, 'owner'> & {
   _id: string;
-  owner: string;
+  owner: SerializeableUser | string;
 };
 
 const Property =

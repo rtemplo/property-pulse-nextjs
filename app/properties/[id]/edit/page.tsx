@@ -1,6 +1,6 @@
 import PropertyEditForm from '@/components/PropertyEditForm';
 import connectDB from '@/config/database';
-import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
+import Property, { PropertyDocument, SerializeableProperty } from '@/models/Property';
 import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 type PageProps = {
@@ -17,7 +17,7 @@ const PropertyEditPage: React.FC<PageProps> = async ({ params }) => {
     return <h1 className="text-center text-2xl font-bold mt-10">Property not found</h1>;
   }
 
-  const property = convertToSerializeableObject<PropertyDocument, SerializableProperty>(
+  const property = convertToSerializeableObject<PropertyDocument, SerializeableProperty>(
     propertyDoc
   );
 

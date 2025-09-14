@@ -1,7 +1,7 @@
 'use server';
 
 import connectDB from '@/config/database';
-import Property, { SerializableProperty } from '@/models/Property';
+import Property, { SerializeableProperty } from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -26,7 +26,7 @@ async function addProperty(formData: FormData) {
     .getAll('images')
     .filter((image) => image instanceof File && image.name !== '') as File[];
 
-  const propertyData: Partial<SerializableProperty> = {
+  const propertyData: Partial<SerializeableProperty> = {
     owner: userId,
     type: formData.get('type') as string,
     name: formData.get('name') as string,
