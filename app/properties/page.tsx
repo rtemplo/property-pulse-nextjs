@@ -1,17 +1,44 @@
 import PropertyCard from '@/components/PropertyCard';
+import Pagination from '@/components/Pagination';
+
 // import properties from '@/properties.json';
 import connectDB from '@/config/database';
-import Property from '@/models/Property';
+import Property, { PropertyDocument, SerializeableProperty } from '@/models/Property';
+import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 // Add artificial delay to see loading component
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const PropertiesPage = async () => {
+interface PropertiesPageProps {
+  searchParams: {
+    page?: string;
+    pageSize?: string;
+  };
+}
+
+const PropertiesPage = async ({
+  searchParams: { page = '1', pageSize = '6' }
+}: PropertiesPageProps) => {
+  await connectDB('/properties');
+
   // Add .3 second delay to see loading component
   // await delay(300);
 
-  await connectDB('/properties');
-  const properties = await Property.find({}).lean();
+  const _page = parseInt(page as string, 10);
+  const _pageSize = parseInt(pageSize as string, 10);
+  const validPage = isNaN(_page) || _page < 1 ? 1 : _page;
+  const validPageSize = isNaN(_pageSize) || _pageSize < 1 ? 2 : _pageSize;
+
+  const skip = (validPage - 1) * validPageSize;
+  const limit = validPageSize;
+
+  const totalItems = await Property.countDocuments();
+  const propertyDocs = await Property.find({}).skip(skip).limit(limit).lean();
+  const properties = propertyDocs.map(
+    convertToSerializeableObject<PropertyDocument, SerializeableProperty>
+  );
+
+  const showPagination = totalItems > validPageSize;
 
   return (
     <section className="px-4 py-8">
@@ -24,6 +51,9 @@ const PropertiesPage = async () => {
               <PropertyCard key={property._id.toString()} property={property} />
             ))}
           </div>
+        )}
+        {showPagination && (
+          <Pagination page={validPage} pageSize={validPageSize} totalItems={totalItems} />
         )}
       </div>
     </section>
