@@ -1,11 +1,15 @@
 import PropertyCard from './PropertyCard';
 import Link from 'next/link';
 import connectDB from '@/config/database';
-import Property from '@/models/Property';
+import Property, { PropertyDocument, SerializeableProperty } from '@/models/Property';
+import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 const HomeProperties: React.FC = async () => {
   await connectDB('HomeProperties');
-  const recentProperties = await Property.find({}).sort({ createdAt: -1 }).limit(3).lean();
+  const recentPropertyDocs = await Property.find({}).sort({ createdAt: -1 }).limit(3).lean();
+  const recentProperties = recentPropertyDocs.map(
+    convertToSerializeableObject<PropertyDocument, SerializeableProperty>
+  );
 
   return (
     <>
@@ -17,7 +21,7 @@ const HomeProperties: React.FC = async () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {recentProperties.map((property) => (
-                <PropertyCard key={property._id.toString()} property={property} />
+                <PropertyCard key={property._id} property={property} />
               ))}
             </div>
           )}

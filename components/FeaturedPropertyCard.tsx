@@ -2,10 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarker } from 'react-icons/fa';
 
-import { PropertyDocument } from '@/models/Property';
+import { SerializeableProperty } from '@/models/Property';
 
 interface FeaturedPropertyCardProps {
-  property: PropertyDocument;
+  property: SerializeableProperty;
 }
 
 const FeaturedPropertyCard: React.FC<FeaturedPropertyCardProps> = ({ property }) => {

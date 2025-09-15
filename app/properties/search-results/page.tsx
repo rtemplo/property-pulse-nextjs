@@ -7,10 +7,10 @@ import Property, { PropertyDocument, SerializeableProperty } from '@/models/Prop
 import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 interface PageProps {
-  searchParams: {
+  searchParams: Promise<{
     location?: string;
     propertyType?: string;
-  };
+  }>;
 }
 
 const SearchResultsPage: React.FC<PageProps> = async ({ searchParams }) => {

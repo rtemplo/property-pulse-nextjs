@@ -2,7 +2,8 @@ import PropertyCard from '@/components/PropertyCard';
 import { getSessionUser } from '@/utils/getSessionUser';
 import connectDB from '@/config/database';
 import User from '@/models/User';
-import { PropertyDocument } from '@/models/Property';
+import { PropertyDocument, SerializeableProperty } from '@/models/Property';
+import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 const SavedPropertiesPage: React.FC = async () => {
   await connectDB('/properties/saved');
@@ -19,7 +20,10 @@ const SavedPropertiesPage: React.FC = async () => {
   }
 
   // Type assertion because populate() replaces ObjectIds with actual Property documents
-  const bookmarks = user.bookmarks as unknown as PropertyDocument[];
+  const bookmarkDocs = user.bookmarks as unknown as PropertyDocument[];
+  const bookmarks = bookmarkDocs.map(
+    convertToSerializeableObject<PropertyDocument, SerializeableProperty>
+  );
 
   return (
     <section className="px-4 py-6">

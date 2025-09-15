@@ -10,15 +10,14 @@ import { convertToSerializeableObject } from '@/utils/convertToObject';
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 interface PropertiesPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
     pageSize?: string;
-  };
+  }>;
 }
 
-const PropertiesPage = async ({
-  searchParams: { page = '1', pageSize = '6' }
-}: PropertiesPageProps) => {
+const PropertiesPage: React.FC<PropertiesPageProps> = async ({ searchParams }) => {
+  const { page = '1', pageSize = '6' } = await searchParams;
   await connectDB('/properties');
 
   // Add .3 second delay to see loading component
