@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero';
 import InfoBoxes from '@/components/InfoBoxes';
 import HomeProperties from '@/components/HomeProperties';
+import FeaturedProperties from '@/components/FeaturedProperties';
 
 // Add artificial delay to see loading component
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -13,6 +14,7 @@ export default async function HomePage() {
     <>
       <Hero />
       <InfoBoxes />
+      <FeaturedProperties />
       <HomeProperties />
     </>
   );
