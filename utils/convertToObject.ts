@@ -20,7 +20,7 @@ export function convertToSerializeableObject<
 
     if (Array.isArray(value)) {
       (leanDocument[key as keyof T] as unknown) = value
-        .map((item) => (isConvertibleObject(item) ? item.toString() : null))
+        .map((item) => (isConvertibleObject(item) ? item.toString() : item))
         .filter((item): item is string => item !== null);
     }
   }
