@@ -1,12 +1,10 @@
-import Link from 'next/link';
-import { FaArrowLeft } from 'react-icons/fa';
-
 import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyImages from '@/components/PropertyImages';
 import BookmarkButton from '@/components/BookmarkButton';
 import ShareButtons from '@/components/ShareButtons';
 import PropertyContactForm from '@/components/PropertyContactForm';
+import BackButton from '@/components/BackButton';
 
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
@@ -25,10 +23,7 @@ const PropertyPage = async ({ params }: PageProps) => {
       <PropertyHeaderImage image={property?.images[0] || ''} />
       <section>
         <div className="container m-auto py-6 px-6">
-          <Link href="/properties" className="text-blue-500 hover:text-blue-600 flex items-center">
-            <FaArrowLeft className="mr-2" />
-            Back to Properties
-          </Link>
+          <BackButton />
         </div>
       </section>
       <section className="bg-blue-50">
