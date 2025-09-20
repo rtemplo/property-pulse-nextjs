@@ -5,11 +5,11 @@ import markMessageAsRead from '@/app/actions/markMessageAsRead';
 import deleteMessage from '@/app/actions/deleteMessage';
 import { useGlobalContext } from '@/context/GlobalContext';
 
-import { SerializeableMessage } from '@/models/Message';
-import { SerializeableProperty } from '@/models/Property';
+import { SerializableMessage } from '@/models/Message';
+import { SerializableProperty } from '@/models/Property';
 
 interface MessageCardProps {
-  message: SerializeableMessage;
+  message: SerializableMessage;
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({ message }) => {
@@ -52,7 +52,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ message }) => {
       )}
       <h2 className="text-xl mb-4">
         <span className="font-bold">Property Inquiry:</span>{' '}
-        {(message.property as SerializeableProperty).name}
+        {(message.property as SerializableProperty).name}
       </h2>
       <p className="text-gray-700">{message.body}</p>
       <ul className="mt-4">

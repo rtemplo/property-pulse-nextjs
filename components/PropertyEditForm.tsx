@@ -1,8 +1,8 @@
 import updateProperty from '@/app/actions/updateProperty';
-import { SerializeableProperty } from '@/models/Property';
+import { SerializableProperty } from '@/models/Property';
 
 interface PropertyEditFormProps {
-  property: SerializeableProperty;
+  property: SerializableProperty;
 }
 
 const PropertyEditForm: React.FC<PropertyEditFormProps> = ({ property }) => {

@@ -1,13 +1,13 @@
 import connectDB from '@/config/database';
-import Property, { PropertyDocument, SerializeableProperty } from '@/models/Property';
+import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
 import FeaturedPropertyCard from './FeaturedPropertyCard';
-import { convertToSerializeableObject } from '@/utils/convertToObject';
+import { convertToSerializableObject } from '@/utils/convertToObject';
 
 const FeaturedProperties: React.FC = async () => {
   await connectDB();
   const propertyDocs = await Property.find({ is_featured: true }).lean();
   const properties = propertyDocs.map(
-    convertToSerializeableObject<PropertyDocument, SerializeableProperty>
+    convertToSerializableObject<PropertyDocument, SerializableProperty>
   );
 
   return properties.length === 0 ? null : (

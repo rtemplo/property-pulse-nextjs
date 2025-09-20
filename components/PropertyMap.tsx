@@ -7,12 +7,12 @@ import Spinner from '@/components/Spinner';
 import Map, { Marker } from 'react-map-gl/mapbox';
 
 import { OutputFormat } from 'react-geocode';
-import type { SerializeableProperty } from '@/models/Property';
+import type { SerializableProperty } from '@/models/Property';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import pin from '@/assets/images/pin.svg';
 
 interface PropertyMapProps {
-  property: SerializeableProperty;
+  property: SerializableProperty;
 }
 
 const PropertyMap: React.FC<PropertyMapProps> = ({ property }) => {

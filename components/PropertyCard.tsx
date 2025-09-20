@@ -1,11 +1,11 @@
-import { SerializeableProperty } from '@/models/Property';
+import { SerializableProperty } from '@/models/Property';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarker } from 'react-icons/fa';
 
 export interface PropertyCardProps {
-  property: SerializeableProperty;
+  property: SerializableProperty;
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {

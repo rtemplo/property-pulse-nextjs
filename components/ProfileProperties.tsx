@@ -2,16 +2,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { SerializeableProperty } from '@/models/Property';
+import { SerializableProperty } from '@/models/Property';
 import deleteProperty from '@/app/actions/deleteProperty';
 import { toast } from 'react-toastify';
 
 interface ProfilePropertiesProps {
-  initialProperties: SerializeableProperty[];
+  initialProperties: SerializableProperty[];
 }
 
 const ProfileProperties: React.FC<ProfilePropertiesProps> = ({ initialProperties }) => {
-  const [properties, setProperties] = useState<SerializeableProperty[]>(initialProperties);
+  const [properties, setProperties] = useState<SerializableProperty[]>(initialProperties);
 
   const handleDeleteProperty = async (propertyId: string) => {
     const confirmed = confirm('Are you sure you want to delete this property?');

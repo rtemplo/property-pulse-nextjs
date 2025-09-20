@@ -1,6 +1,6 @@
 import { Schema, model, models, Model, InferSchemaType, Types } from 'mongoose';
-import { SerializeableUser } from './User';
-import { SerializeableProperty } from './Property';
+import { SerializableUser } from './User';
+import { SerializableProperty } from './Property';
 
 // TypeScript interface for User document
 const MessageSchema = new Schema(
@@ -46,11 +46,11 @@ export type MessageDocument = MessageType & {
   _id: Types.ObjectId;
 };
 
-export type SerializeableMessage = Omit<MessageType, 'sender' | 'recipient' | 'property'> & {
+export type SerializableMessage = Omit<MessageType, 'sender' | 'recipient' | 'property'> & {
   _id: string;
-  sender: SerializeableUser | string;
-  recipient: SerializeableUser | string;
-  property: SerializeableProperty | string;
+  sender: SerializableUser | string;
+  recipient: SerializableUser | string;
+  property: SerializableProperty | string;
 };
 
 const Message =

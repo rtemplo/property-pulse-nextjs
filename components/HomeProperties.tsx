@@ -1,14 +1,14 @@
 import PropertyCard from './PropertyCard';
 import Link from 'next/link';
 import connectDB from '@/config/database';
-import Property, { PropertyDocument, SerializeableProperty } from '@/models/Property';
-import { convertToSerializeableObject } from '@/utils/convertToObject';
+import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
+import { convertToSerializableObject } from '@/utils/convertToObject';
 
 const HomeProperties: React.FC = async () => {
   await connectDB('HomeProperties');
   const recentPropertyDocs = await Property.find({}).sort({ createdAt: -1 }).limit(3).lean();
   const recentProperties = recentPropertyDocs.map(
-    convertToSerializeableObject<PropertyDocument, SerializeableProperty>
+    convertToSerializableObject<PropertyDocument, SerializableProperty>
   );
 
   return (

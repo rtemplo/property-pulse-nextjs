@@ -1,10 +1,10 @@
-import { PropertyDocument, SerializeableProperty } from '@/models/Property';
-import { MessageDocument, SerializeableMessage } from '@/models/Message';
-import { SerializeableUser, UserDocument } from '@/models/User';
+import { PropertyDocument, SerializableProperty } from '@/models/Property';
+import { MessageDocument, SerializableMessage } from '@/models/Message';
+import { SerializableUser, UserDocument } from '@/models/User';
 
-export function convertToSerializeableObject<
+export function convertToSerializableObject<
   T extends PropertyDocument | UserDocument | MessageDocument,
-  U extends SerializeableProperty | SerializeableUser | SerializeableMessage
+  U extends SerializableProperty | SerializableUser | SerializableMessage
 >(leanDocument: T): U {
   const isConvertibleObject = (
     value: unknown

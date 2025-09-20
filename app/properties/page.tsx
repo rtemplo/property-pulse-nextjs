@@ -3,8 +3,8 @@ import Pagination from '@/components/Pagination';
 
 // import properties from '@/properties.json';
 import connectDB from '@/config/database';
-import Property, { PropertyDocument, SerializeableProperty } from '@/models/Property';
-import { convertToSerializeableObject } from '@/utils/convertToObject';
+import Property, { PropertyDocument, SerializableProperty } from '@/models/Property';
+import { convertToSerializableObject } from '@/utils/convertToObject';
 
 // Add artificial delay to see loading component
 // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -34,7 +34,7 @@ const PropertiesPage: React.FC<PropertiesPageProps> = async ({ searchParams }) =
   const totalItems = await Property.countDocuments();
   const propertyDocs = await Property.find({}).skip(skip).limit(limit).lean();
   const properties = propertyDocs.map(
-    convertToSerializeableObject<PropertyDocument, SerializeableProperty>
+    convertToSerializableObject<PropertyDocument, SerializableProperty>
   );
 
   const showPagination = totalItems > validPageSize;

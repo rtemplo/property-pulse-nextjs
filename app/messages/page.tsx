@@ -1,12 +1,12 @@
-import Messages, { MessageDocument, SerializeableMessage } from '@/models/Message';
+import Messages, { MessageDocument, SerializableMessage } from '@/models/Message';
 import MessageCard from '@/components/MessageCard';
 
 import connectDB from '@/config/database';
 import { getSessionUser } from '@/utils/getSessionUser';
-import { convertToSerializeableObject } from '@/utils/convertToObject';
+import { convertToSerializableObject } from '@/utils/convertToObject';
 
-import { SerializeableUser, UserDocument } from '@/models/User';
-import { PropertyDocument, SerializeableProperty } from '@/models/Property';
+import { SerializableUser, UserDocument } from '@/models/User';
+import { PropertyDocument, SerializableProperty } from '@/models/Property';
 
 const MessagesPage: React.FC = async () => {
   await connectDB('/messages');
@@ -30,25 +30,24 @@ const MessagesPage: React.FC = async () => {
 
   const messages = [...unreadMessagesData, ...readMessagesData] as MessageDocument[];
   const serializedMessages = messages.map((msg) => {
-    const serializeableMessage = convertToSerializeableObject<
-      MessageDocument,
-      SerializeableMessage
-    >(msg);
+    const serializableMessage = convertToSerializableObject<MessageDocument, SerializableMessage>(
+      msg
+    );
 
-    serializeableMessage.sender = convertToSerializeableObject<UserDocument, SerializeableUser>(
+    serializableMessage.sender = convertToSerializableObject<UserDocument, SerializableUser>(
       msg.sender as unknown as UserDocument
     );
 
-    serializeableMessage.recipient = convertToSerializeableObject<UserDocument, SerializeableUser>(
+    serializableMessage.recipient = convertToSerializableObject<UserDocument, SerializableUser>(
       msg.recipient as unknown as UserDocument
     );
 
-    serializeableMessage.property = convertToSerializeableObject<
+    serializableMessage.property = convertToSerializableObject<
       PropertyDocument,
-      SerializeableProperty
+      SerializableProperty
     >(msg.property as unknown as PropertyDocument);
 
-    return serializeableMessage;
+    return serializableMessage;
   });
 
   return (
